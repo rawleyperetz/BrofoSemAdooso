@@ -81,6 +81,8 @@ enum MenuItem {
   item1,
   item2,
   item3,
+  item4,
+  item5,
 }
 
 class WriterSide extends StatelessWidget {
@@ -88,35 +90,88 @@ class WriterSide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('BrofoSemAdooso'),
-        actions: [
-          PopupMenuButton<MenuItem>(
-              onSelected: (value) {
-                if (value == MenuItem.item1) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                } else {
-                  print(value);
-                }
-              },
-              itemBuilder: (context) => const [
-                    PopupMenuItem(
-                        child: Text("Reader's Mode"), value: MenuItem.item1),
-                    PopupMenuItem(
-                        child: Text('Settings'), value: MenuItem.item2),
-                    PopupMenuItem(child: Text('About'), value: MenuItem.item3),
-                  ]),
-        ],
-      ),
-      body: Center(
-          child: TextButton(
-              onPressed: () {
-                uploadPdf();
-              },
-              child: const Text("Upload PDF"))),
-    );
+        appBar: AppBar(
+          title: Text('BrofoSemAdooso'),
+          actions: [
+            PopupMenuButton<MenuItem>(
+                onSelected: (value) {
+                  if (value == MenuItem.item1) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  } else {
+                    print(value);
+                  }
+                },
+                itemBuilder: (context) => const [
+                      PopupMenuItem(
+                          child: Text('My Writes'), value: MenuItem.item1),
+                      PopupMenuItem(
+                          child: Text('My Drafts'), value: MenuItem.item2),
+                      PopupMenuItem(
+                          child: Text("Reader's Mode"), value: MenuItem.item3),
+                      PopupMenuItem(
+                          child: Text('Settings'), value: MenuItem.item4),
+                      PopupMenuItem(
+                          child: Text('About'), value: MenuItem.item5),
+                    ]),
+          ],
+        ),
+        body: Center(
+            child: Container(
+                width: screenWidth * 0.9,
+                height: screenHeight * 0.8,
+                child: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                            "Click on 'Upload PDF' to upload your story or Enter your story in the text Field below"),
+                        const SizedBox(height: 20),
+                        Text(
+                            "Note: A minimum of 150 Twi text and only 20% of Foreign Text is allowed!"),
+                        const SizedBox(height: 20),
+                        TextButton(
+                            onPressed: () {
+                              uploadPdf();
+                            },
+                            child: const Text("Upload PDF")),
+                        const SizedBox(height: 20),
+                        TextField(
+                            decoration: new InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.deepOrange, width: 2.0),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.deepOrange, width: 2.0),
+                              ),
+                              hintText: 'Begin your Story here',
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null),
+                        const SizedBox(height: 20),
+                        TextButton(
+                            onPressed: () {
+                              uploadPdf();
+                            },
+                            child: const Text("Save to My Drafts")),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          child: const Text(
+                            'Upload Text',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
+                      ]),
+                ))));
   }
 
   Future uploadPdf() async {
